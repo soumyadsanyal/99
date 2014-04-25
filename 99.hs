@@ -60,7 +60,13 @@ disjunct list
  where
   (x:rest) = list
 
-
+isIn :: Eq a => a -> [a] -> Bool
+isIn thing list
+ | empty list = False
+ | x == thing = True
+ | otherwise = isIn thing rest
+ where
+  (x:rest) = list
 
 --1
 
