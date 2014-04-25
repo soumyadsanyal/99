@@ -1,4 +1,5 @@
---topmatter
+ 
+--Lemmas
 
 empty :: [a] -> Bool
 empty [] = True
@@ -68,7 +69,61 @@ isIn thing list
  where
   (x:rest) = list
 
---1
+
+taker :: Int -> [a] -> [a]
+taker number list
+ | number < 0 = error "I'm not a giver, I'm a taker!"
+ | number == 0 = []
+ | otherwise = x: (taker (number - 1) rest)
+ where
+  (x:rest) = list 
+
+dropper :: Int -> [a] -> [a]
+dropper number list
+ | number < 0 = error "I'm not a giver, I'm a dropper!"
+ | number ==0 = list
+ | number>0 = dropper (number - 1) rest
+ where
+  (x:rest) = list 
+
+splitInPlace :: Int -> [a] -> ([a],[a])
+splitInPlace index list 
+ | index < 0 || index > (longer list) = error "You're out of line, man!"
+ | otherwise = ((taker index list),(dropper index list))
+
+iftaker :: (a->Bool) -> [a] -> [a]
+iftaker predicate list
+ | ((predicate x) == False) = []
+ | otherwise = x: (iftaker predicate rest)
+ where
+  (x:rest) = list
+
+ifdropper :: (a->Bool) -> [a] -> [a]
+ifdropper predicate list
+ | (predicate x) == True = ifdropper predicate rest
+ | otherwise = list
+ where
+  (x:rest) = list
+
+whiledropper :: (a->Bool) -> [a] -> [a]
+whiledropper predicate list 
+ | (predicate x) == False = list
+ | otherwise = whiledropper predicate rest
+ where
+  (x:rest) = list
+
+spanner :: (a->Bool) -> [a] -> ([a],[a])
+spanner predicate list
+ | empty list = error "You can't give me nothin', man!"
+ | otherwise = (iftaker predicate list, ifdropper predicate list)
+
+
+
+
+
+--Here begin the theorems
+
+--Theorem 1
 
 finaller :: [a] -> a
 finaller list
@@ -79,7 +134,7 @@ finaller list
  where
   (x:xs) = list
 
---2
+--Theorem 2
 
 secondtofinaller :: [a] -> a
 secondtofinaller list
@@ -90,7 +145,7 @@ secondtofinaller list
  where
   (x:y:rest) = list
 
---3
+--Theorem 3
 
 kelement :: Int -> [a] -> a
 kelement place list 
@@ -101,7 +156,7 @@ kelement place list
  where
   (x:rest) = list
 
---4 
+--Theorem 4 
 
 longer :: [a] -> Int
 longer list
@@ -110,7 +165,7 @@ longer list
  where
   (x:rest) = list
 
---5
+--Theorem 5
 
 
 rev:: [a] -> [a]
@@ -120,7 +175,7 @@ rev list
  where
   (x:rest)=list
 
---6
+--Theorem 6
 
 ifpalindrome :: (Eq a)=> [a] -> Bool
 ifpalindrome string
