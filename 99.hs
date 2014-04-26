@@ -1,4 +1,5 @@
  
+ 
 --Lemmas
 
 empty :: [a] -> Bool
@@ -69,6 +70,14 @@ isIn thing list
  where
   (x:rest) = list
 
+isNotIn :: Eq a => a -> [a] -> Bool
+isNotIn thing list
+ | empty list = True
+ | x == thing = False
+ | otherwise = isNotIn thing rest
+ where
+  (x:rest) = list
+
 
 taker :: Int -> [a] -> [a]
 taker number list
@@ -112,10 +121,87 @@ whiledropper predicate list
  where
   (x:rest) = list
 
+whiletaker :: (a->Bool) -> [a] -> [a]
+whiletaker predicate list 
+ | (predicate x) == False = []
+ | otherwise = x: (whiletaker predicate rest)
+ where
+  (x:rest) = list
+
+breakright :: (a->Bool) -> [a] -> [a]
+breakright predicate list 
+ | (predicate x) == True = list
+ | otherwise = breakright predicate rest
+ where
+  (x:rest) = list
+
+breakleft :: (a->Bool) -> [a] -> [a]
+breakleft predicate list 
+ | (predicate x) == True = []
+ | otherwise = x: (breakleft predicate rest)
+ where
+  (x:rest) = list
+
+
+
 spanner :: (a->Bool) -> [a] -> ([a],[a])
 spanner predicate list
  | empty list = error "You can't give me nothin', man!"
  | otherwise = (iftaker predicate list, ifdropper predicate list)
+
+breaker :: (a->Bool) -> [a] -> ([a],[a])
+breaker predicate list
+ | empty list = error "You can't give me nothing, man!"
+ | otherwise = (breakleft predicate list, breakright predicate list)
+
+
+filtering :: (a->Bool) -> [a] -> [a]
+filtering predicate list
+ | empty list = []
+ | predicate x == True = x : (filtering predicate rest)
+ | otherwise = filtering predicate rest
+ where
+  (x:rest) = list
+
+isStartOf :: Eq a => [a] -> [a] -> Bool
+isStartOf thing problems
+ | empty problems = error "What's your problem?!"
+ | empty thing = True
+ | not (thispartofthing == thispartofproblems) = False
+ | restofthing  == [] = True
+ | otherwise = isStartOf restofthing restofproblems
+ where
+  (thispartofthing:restofthing) = thing
+  (thispartofproblems:restofproblems) = problems
+
+isEndOf :: Eq a => [a] -> [a] -> Bool
+isEndOf thing problems = isStartOf (rev thing) (rev problems)
+
+-- I should be able to find an optimization of this function:
+isPartOf :: Eq a => [a] -> [a] -> Bool
+isPartOf thing problems
+ | isStartOf thing problems = True
+ | restofproblems == [] = False
+ | otherwise = isStartOf thing restofproblems
+ where
+  (thispartofproblems:restofproblems) = problems
+
+zipper :: Eq a => Eq b => [a] -> [b] -> [(a,b)]
+zipper lista listb
+ | lista == [] || listb == [] = []
+ | otherwise = (thispartoflista,thispartoflistb): (zipper restoflista restoflistb)
+ where
+  (thispartoflista:restoflista) = lista
+  (thispartoflistb:restoflistb) = listb
+
+zipperWith :: Eq a => Eq b =>  (a->b->c) -> [a] -> [b] -> [c]
+zipperWith function lista listb
+ | lista == [] || listb == [] = []
+ | otherwise = (function thispartoflista thispartoflistb) : (zipperWith function restoflista restoflistb)
+ where
+  (thispartoflista:restoflista) = lista
+  (thispartoflistb:restoflistb) = listb
+
 
 
 
