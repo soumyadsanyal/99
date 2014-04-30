@@ -202,6 +202,36 @@ zipperWith function lista listb
   (thispartoflista:restoflista) = lista
   (thispartoflistb:restoflistb) = listb
 
+splitlines ::  String -> Bool
+splitlines string
+ | x=='\n'  = True 
+ | rest=="" = False
+ | otherwise = splitlines rest
+ where
+  (x:rest) = string
+
+
+leftOf:: (a->Bool) -> [a] -> [a]
+leftOf predicate list 
+ | (predicate x) == True = []
+ | otherwise = x: (leftOf predicate rest)
+ where
+  (x:rest) = list
+
+rightOf :: (a->Bool) -> [a] -> [a]
+rightOf predicate list 
+ | (predicate x) == True = rest
+ | otherwise = (rightOf predicate rest)
+ where
+  (x:rest) = list
+
+
+splitter string 
+ | isNotIn '\n' string  = string:[]
+ | otherwise = listadder ((leftOf (=='\n') string) : []) (splitter rest)
+ where
+  rest = rightOf (=='\n') string
+
 
 
 
@@ -269,3 +299,4 @@ ifpalindrome string
  | otherwise = False
 
 
+ 
