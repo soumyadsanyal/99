@@ -100,33 +100,33 @@ splitInPlace index list
  | index < 0 || index > (longer list) = error "You're out of line, man!"
  | otherwise = ((taker index list),(dropper index list))
 
-iftaker :: (a->Bool) -> [a] -> [a]
-iftaker predicate list
+takeSoLongAsTrue :: (a->Bool) -> [a] -> [a]
+takeSoLongAsTrue predicate list
  | ((predicate x) == False) = []
- | otherwise = x: (iftaker predicate rest)
+ | otherwise = x: (takeSoLongAsTrue predicate rest)
  where
   (x:rest) = list
 
-ifdropper :: (a->Bool) -> [a] -> [a]
-ifdropper predicate list
- | (predicate x) == True = ifdropper predicate rest
+dropAfterFirstFalse:: (a->Bool) -> [a] -> [a]
+dropAfterFirstFalse predicate list
+ | (predicate x) == True = dropAfterFirstFalse predicate rest
  | otherwise = list
  where
   (x:rest) = list
 
-whiledropper :: (a->Bool) -> [a] -> [a]
-whiledropper predicate list 
+dropAtFirstFalse :: (a->Bool) -> [a] -> [a]
+dropAtFirstFalse predicate list 
  | (predicate x) == False = list
- | otherwise = whiledropper predicate rest
+ | otherwise = dropAtFirstFalse predicate rest
  where
   (x:rest) = list
 
-whiletaker :: (a->Bool) -> [a] -> [a]
-whiletaker predicate list 
- | (predicate x) == False = []
- | otherwise = x: (whiletaker predicate rest)
- where
-  (x:rest) = list
+--whiletaker :: (a->Bool) -> [a] -> [a]
+--whiletaker predicate list 
+-- | (predicate x) == False = []
+-- | otherwise = x: (whiletaker predicate rest)
+-- where
+--  (x:rest) = list
 
 breakright :: (a->Bool) -> [a] -> [a]
 breakright predicate list 
@@ -143,11 +143,11 @@ breakleft predicate list
   (x:rest) = list
 
 
-
-spanner :: (a->Bool) -> [a] -> ([a],[a])
-spanner predicate list
- | empty list = error "You can't give me nothin', man!"
- | otherwise = (iftaker predicate list, ifdropper predicate list)
+--This no longer works, I renamed the iftaker function
+--spanner :: (a->Bool) -> [a] -> ([a],[a])
+--spanner predicate list
+-- | empty list = error "You can't give me nothin', man!"
+-- | otherwise = (iftaker predicate list, ifdropper predicate list)
 
 breaker :: (a->Bool) -> [a] -> ([a],[a])
 breaker predicate list
@@ -232,7 +232,15 @@ splitter string
  where
   rest = rightOf (=='\n') string
 
+isWhitespace character = isIn character whitelist
+ where
+  whitelist = ['\n','\t',' ']
 
+totalsplitter string 
+ | isNotIn '\n' string  = string:[]
+ | otherwise = listadder ((leftOf (=='\n') string) : []) (totalsplitter rest)
+ where
+  rest = rightOf (=='\n') string
 
 
 
