@@ -1,3 +1,4 @@
+import Data.Char (digitToInt)
  
  
 --Lemmas
@@ -236,11 +237,32 @@ isWhitespace character = isIn character whitelist
  where
   whitelist = ['\n','\t',' ']
 
+containsWhitespace string = isIn '\n' string  || isIn '\t' string || isIn ' ' string
+
+
 totalsplitter string 
- | isNotIn '\n' string  = string:[]
- | otherwise = listadder ((leftOf (=='\n') string) : []) (totalsplitter rest)
+ | not (containsWhitespace string)  = string:[]
+ | otherwise = listadder ((leftOf (isWhitespace) string) : []) (totalsplitter rest)
  where
-  rest = rightOf (=='\n') string
+  rest = rightOf (isWhitespace) string
+
+safetop :: [a] -> Maybe a
+safetop list 
+ | (empty list) = Nothing
+ | otherwise = Just x 
+ where 
+  (x:rest) = list
+
+
+loop acc [] = acc
+loop acc (x:rest) = loop acc' rest
+ where
+  acc' = 10*acc + digitToInt x
+
+asInt :: String -> Int
+asInt xs = loop 0 xs
+
+
 
 
 
