@@ -1,4 +1,7 @@
 import Data.Char (digitToInt)
+import Data.Char (toUpper)
+import Data.Char (ord)
+import Data.Bits (shiftL, (.&.), (.|.))
  
  
 --Lemmas
@@ -262,7 +265,50 @@ loop acc (x:rest) = loop acc' rest
 asInt :: String -> Int
 asInt xs = loop 0 xs
 
+squarer :: Num a => [a] -> [a]
+squarer list
+ | empty list = []
+ | otherwise = (x*x) : (squarer rest)
+ where
+  (x:rest) = list
 
+mapper :: (a->b) -> [a] -> [b]
+mapper function list
+ | empty list = []
+ | otherwise = (function x) : (mapper function rest)
+ where
+  (x:rest)=list
+
+composer :: (b->c)->(a->b)->(a->c)
+composer f g = \x-> (f (g x))
+
+accsummer :: Num a => [a] -> a
+accsummer list = helper 0 list
+ where
+  helper acc (x:rest) = helper (acc+x) rest
+  helper acc _ = acc
+
+
+lfolder :: (a->b->a)->a->[b]->a
+lfolder function accumulator list
+ | empty list = accumulator
+ | otherwise = lfolder function (function accumulator x) rest
+ where
+  (x:rest) = list
+
+rfolder :: (lt->acc->acc)->acc->[lt]->acc
+rfolder function accumulator list
+ | empty list = accumulator
+ | otherwise = function x (rfolder function accumulator rest)
+ where
+  (x:rest) = list
+
+filterer:: (lt->Bool)->[lt]->[lt]
+filterer predicate (x:rest) = rfolder function accumulator (x:xs)
+ where
+  function lt acc
+   |predicate lt = lt:acc
+   |otherwise = acc
 
 
 
