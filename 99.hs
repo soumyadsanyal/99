@@ -310,6 +310,11 @@ filterer predicate (x:rest) = rfolder function [] (x:rest)
    |predicate lt = lt:acc
    |otherwise = acc
 
+identity :: [a] -> [a]
+identity list = rfolder (:) [] list
+
+listappender :: [a]->[a]->[a]
+listappender lista listb = rfolder (:) listb lista
 
 
 
