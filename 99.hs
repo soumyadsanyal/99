@@ -304,7 +304,7 @@ rfolder function accumulator list
   (x:rest) = list
 
 filterer:: (lt->Bool)->[lt]->[lt]
-filterer predicate (x:rest) = rfolder function accumulator (x:xs)
+filterer predicate (x:rest) = rfolder function [] (x:rest)
  where
   function lt acc
    |predicate lt = lt:acc
