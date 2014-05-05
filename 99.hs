@@ -316,6 +316,10 @@ identity list = rfolder (:) [] list
 listappender :: [a]->[a]->[a]
 listappender lista listb = rfolder (:) listb lista
 
+secondcoordinate :: (a,b)->b
+secondcoordinate (x,y) = y
+secondcoordinate _ = error "Whoa, whoa!"
+
 
 
 --Here begin the theorems
@@ -378,6 +382,56 @@ ifpalindrome :: (Eq a)=> [a] -> Bool
 ifpalindrome string
  | string == (rev string) = True
  | otherwise = False
+
+
+--Theorem 7
+
+--DON'T FORGET TO DO THIS!
+
+
+
+--Theorem 8
+
+
+compressor :: Eq a => [a]->[a]
+compressor list = rfolder function accumulator list
+ where
+  function term list
+   | empty list = term:[]
+   | term == (top list) = list
+   | otherwise = term:list
+  accumulator = []
+
+--Theorem 9
+
+compressinator :: Eq a =>  [a]->[[a]]
+compressinator list = rfolder function accumulator list
+ where
+  accumulator = []
+  function :: Eq a => a->[[a]]->[[a]]
+  function term list
+   | empty list = (term:[]):[]
+   | isIn term x = (term:x):rest
+   | otherwise = (term:[]):list
+   where
+    (x:rest) = list
+
+
+--Theorem 10
+
+countingCompressor :: Eq a => Num b => [a] -> [(b,a)]
+countingCompressor list = rfolder function accumulator list
+ where
+  accumulator = []
+  function :: Eq a => Num b => a->[(b,a)]->[(b,a)]
+  function term list
+   | empty list = (1,term):list
+   | secondcoordinate x == term = let (currentnumber,expression)=x
+                                  in (currentnumber+1,expression):rest
+   | otherwise = (1,term):list
+   where
+    (x:rest) = list
+
 
 
  
