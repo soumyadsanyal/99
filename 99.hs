@@ -318,7 +318,57 @@ listappender lista listb = rfolder (:) listb lista
 
 secondcoordinate :: (a,b)->b
 secondcoordinate (x,y) = y
-secondcoordinate _ = error "Whoa, whoa!"
+
+--Exploring type construction
+
+data Move = Lefter | Righter | Upper | Downer  deriving (Eq, Show)
+ 
+type Pos = (Int,Int) 
+
+move :: Move->Pos->Pos
+move direction (x,y)
+ | direction == Lefter = (x-1,y)
+ | direction == Righter = (x+1,y)
+ | direction == Upper = (x,y+1)
+ | direction == Downer = (x,y-1)
+
+moves :: [Move]->Pos->Pos
+moves directions (x,y)
+ | empty directions = (x,y)
+ | otherwise = moves rest (move direction (x,y))
+ where
+  (direction:rest) = directions
+
+data Shape = Circle Pos Float | Rectangle Pos Float Float
+ deriving (Eq, Show)
+
+area :: Shape -> Float
+area (Circle pos rad) = pi*rad*rad
+area (Rectangle pos up right) = up*right
+
+anotherarea :: Shape -> Float
+anotherarea shape = case shape of
+                  (Circle pos rad) -> rad*rad*pi
+                  (Rectangle pos right up) -> right*up
+
+data Nat = Zero | Succ Nat
+ deriving (Show, Eq)
+
+natnormal :: Nat -> Int
+natnormal natural = case natural of
+                         Zero -> 0
+                         (Succ n) -> 1 + natnormal n
+
+natweird :: Int -> Nat
+natweird integer = case integer of
+                        0 -> Zero
+                        n -> Succ (natweird (n-1))
+
+natadder :: Nat->Nat->Nat
+natadder this that = case this of
+                     Zero -> that
+                     (Succ n) ->  Succ (natadder n that)
+
 
 
 
@@ -386,8 +436,9 @@ ifpalindrome string
 
 --Theorem 7
 
---DON'T FORGET TO DO THIS!
-
+data T a = G a | L [T a]
+-- G refers to Ground, L refers to List, T refers to Type
+flatten :: [T a] -> [a]
 
 
 --Theorem 8
