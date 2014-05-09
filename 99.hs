@@ -436,9 +436,19 @@ ifpalindrome string
 
 --Theorem 7
 
-data T a = G a | L [T a]
--- G refers to Ground, L refers to List, T refers to Type
-flatten :: [T a] -> [a]
+data Nested a = Element a | List [Nested a]
+ deriving (Show)
+
+flatten :: [Nested a] -> [a]
+flatten ((Element term):[]) = term:[]
+flatten ((Element term):rest) = term:(flatten rest)
+flatten ((List expression):[]) = flatten expression
+flatten ((List expression):rest) = (flatten expression) ++ (flatten rest)
+
+
+
+
+
 
 
 --Theorem 8
