@@ -1,3 +1,4 @@
+ 
 import Data.Char (digitToInt)
 import Data.Char (toUpper)
 import Data.Char (ord)
@@ -522,4 +523,18 @@ countingCompressor' list = rfolder function accumulator list
 
 -- Theorem 12
 
- 
+
+decode :: [Numbers a] -> [a]
+decode expression = case expression of
+                         [] -> []
+                         ((Single term):rest) -> term:(decode rest)
+                         ((Multiple num term):rest) -> case num of
+                                                            2 -> term:(decode ((Single term):rest))
+                                                            _ -> term:(decode ((Multiple (num-1) term):rest))
+
+-- Theorem 13
+
+-- See Theorem 11
+
+-- Theorem 14
+
