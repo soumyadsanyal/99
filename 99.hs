@@ -440,15 +440,11 @@ data Nested a = Element a | List [Nested a]
  deriving (Show)
 
 flatten :: [Nested a] -> [a]
-flatten ((Element term):[]) = term:[]
-flatten ((Element term):rest) = term:(flatten rest)
-flatten ((List expression):[]) = flatten expression
-flatten ((List expression):rest) = (flatten expression) ++ (flatten rest)
-
-
-
-
-
+flatten list = case list of
+                    ((Element term):[]) -> term:[]
+                    ((Element term):rest) -> term:(flatten rest)
+                    ((List expression):[]) -> flatten expression
+                    ((List expression):rest) -> listadder (flatten expression) (flatten rest)
 
 
 --Theorem 8
@@ -493,6 +489,37 @@ countingCompressor list = rfolder function accumulator list
    where
     (x:rest) = list
 
+-- Theorem 11
 
+data Numbers a = Single a | Multiple Int a
+ deriving (Show, Eq)
+
+extractValue :: Numbers a -> a
+extractValue expression = case expression of
+                              (Multiple num term) -> term
+                              (Single term) -> term
+
+extractNum :: Numbers a -> Int 
+extractNum expression = case expression of
+                            (Multiple num term) -> num
+                            (Single term) -> 1
+
+countingCompressor' :: Eq a => [a] -> [Numbers a]
+countingCompressor' list = rfolder function accumulator list
+ where
+  accumulator = []
+  function :: Eq a => a->[Numbers a]->[Numbers a]
+  function term list
+   | empty list = (Single term):list
+   | ((extractValue x) == term) = case x of
+                                     (Single term) -> (Multiple 2 term):rest
+                                     (Multiple currentnumber term) -> (Multiple (currentnumber+1) term):rest
+
+   | otherwise = (Single term):list
+   where
+    (x:rest) = list
+    
+
+-- Theorem 12
 
  
