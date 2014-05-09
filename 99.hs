@@ -538,3 +538,33 @@ decode expression = case expression of
 
 -- Theorem 14
 
+multiplier :: Int -> a -> [a]
+multiplier num term
+ | num == 0 = []
+ | otherwise = term:(multiplier (num-1) term)
+
+
+duplicate :: [a]-> [a]
+duplicate expression = case expression of
+                            [] -> []
+                            (x:rest) -> listadder (multiplier 2 x) (duplicate rest)
+
+-- Theorem 15
+
+kplicate :: Int -> [a] -> [a]
+kplicate num expression = case expression of
+                               [] -> []
+                               (x:rest) -> listadder (multiplier num x) (kplicate num rest)
+
+-- Theorem 16
+
+droppinator period 0 (x:rest) = droppinator period (period-1) rest
+droppinator period currentperiod (x:rest) = x:(droppinator period (currentperiod-1) rest)
+droppinator _ _ [] = []
+
+dropAndGiveMe16 period expression = droppinator period (period-1) expression
+
+-- Theorem 17
+
+
+
