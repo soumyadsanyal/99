@@ -566,5 +566,15 @@ dropAndGiveMe16 period expression = droppinator period (period-1) expression
 
 -- Theorem 17
 
+splittHelper :: Int -> [[a]] -> [[a]]
+splittHelper 0 expression = expression
+splittHelper num (first:second:[]) = splittHelper (num-1) ((listadder first (topsecond:[])):(restsecond):[])
+ where
+  (topsecond:restsecond) = second
+
+splitt :: Int -> [a] -> [[a]]
+splitt num expression = splittHelper num (listadder [[]] (expression:[]))
+
+--Theorem 18
 
 
