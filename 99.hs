@@ -577,4 +577,38 @@ splitt num expression = splittHelper num (listadder [[]] (expression:[]))
 
 --Theorem 18
 
+slicer :: Int -> Int -> [a] -> [a]
+slicer 1 end expression = x
+ where
+  (x:rest) = (splitt end expression)
+slicer i j (x:rest) = slicer (i-1) (j-1) rest
+
+--Theorem 19
+
+rotater :: Int -> [a] -> [a]
+rotater num expression = if (not (empty expression)) then listadder (rev x) (rev y) else []
+ where 
+  (x:y:rest) = splitt (mod num (longer expression)) (rev expression)
+
+-- I really should write the mod function from scratch. For now this will do.
+
+-- Theorem 20
+
+pointDrop :: Int -> [a] -> [a]
+pointDrop num expression = listadder first restofsecond
+ where
+  first:second:[] = splitt (num-1) expression
+  topsecond:restofsecond = second
+
+-- Theorem 21
+
+pointInsert :: Int -> a -> [a] -> [a]
+pointInsert num term expression = listadder (listadder first (term:[])) second
+ where
+  first:second:[] = splitt (num-1) expression
+
+-- Theorem 22
+
+range :: Int -> Int -> [Int]
+range start stop = [start..stop]
 
