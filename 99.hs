@@ -322,6 +322,9 @@ listappender lista listb = rfolder (:) listb lista
 secondcoordinate :: (a,b)->b
 secondcoordinate (x,y) = y
 
+firstcoordinate :: (a,b) -> a
+firstcoordinate (x,y) = x
+
 --Exploring type construction
 
 data Move = Lefter | Righter | Upper | Downer  deriving (Eq, Show)
@@ -682,13 +685,40 @@ eulerPhi num = longer (filterer (isCoPrime num)[1..num])
 
 -- Theorem 35
 
---isPrimeFactor :: Int -> Int -> Bool
---isPrimeFactor num test = (isPrime test) && (mod num test == 0)
+isPrimeFactor :: Int -> Int -> Bool
+isPrimeFactor num test = (isPrime test) && (mod num test == 0) 
 
---primeFactors :: Int -> [Int]
---primeFactors num = filterer (isPrimeFactor num) [1..num]
+primeFactors :: Int -> [Int]
+primeFactors num = filterer (isPrimeFactor num) [1..num]
 
---primeFactorization :: Int -> [Int]
---primeFactorization = 
+primeFactorization :: Int -> [Int]
+primeFactorization 1 = []
+primeFactorization n = firstprime:(primeFactorization (div n firstprime))
+ where
+  (firstprime:restprimes) = (primeFactors n)
+
+-- Theorem 36
+
+primeFactorizerHelper 1 list lastprime = list
+primeFactorizerHelper num list lastprime  
+ | firstprime /= lastprime = primeFactorizerHelper (div num firstprime) ((firstprime,1):list) firstprime
+ | otherwise = primeFactorizerHelper (div num firstprime) ((firstprime,index+1):rest) firstprime
+ where
+  (firstprime:restofprimes) = primeFactors num
+  (x:rest) = list
+  (primething,index) = x
 
 
+primeFactorizer :: Int -> [(Int,Int)]
+primeFactorizer num = rev (primeFactorizerHelper num [] 1)
+
+
+-- Theorem 37
+
+-- Theorem 38
+
+-- Theorem 39
+
+primesInRange start stop = filterer isPrime [start..stop]
+
+-- Theorem 40 
