@@ -635,8 +635,8 @@ range start stop = [start..stop]
 --Theorem 30
 
 --Theorem 31
--- This is a silly test. We should do better.
 
+--silly version first
 isPrimeHelper :: Int -> Int -> Bool
 isPrimeHelper test num 
  | test == 0 = error "1 is not a prime"
@@ -646,6 +646,21 @@ isPrimeHelper test num
 
 isPrime :: Int -> Bool
 isPrime n = if n>1 then isPrimeHelper (n-1) n else False
+
+-- better version
+
+notDivisiblePredicate test num = if (mod num test == 0) then False else True
+
+sievePrimeHelper num (x:rest)
+ | (x == num) = True
+ | (isIn num cut) = sievePrimeHelper num cut 
+ | otherwise = False
+ where
+  cut=(filterer (notDivisiblePredicate x) (x:rest))
+
+sievePrime :: Int -> Bool
+sievePrime num = sievePrimeHelper num [2..num]
+
 
 --Theorem 32
 
