@@ -3,6 +3,8 @@ import Data.Char (digitToInt)
 import Data.Char (toUpper)
 import Data.Char (ord)
 import Data.Bits (shiftL, (.&.), (.|.))
+import System.Random
+import Control.Monad
  
  
 --Lemmas
@@ -611,4 +613,67 @@ pointInsert num term expression = listadder (listadder first (term:[])) second
 
 range :: Int -> Int -> [Int]
 range start stop = [start..stop]
+
+--Theorem 23
+
+--Theorem 24
+
+--Theorem 25
+
+--Theorem 26 
+
+--combinations _ [] = []
+--combinations 0 list = []
+--combinations 1 (x:rest) = (x:[]):(combinations 1 rest)
+
+--Theorem 27
+
+--Theorem 28
+
+--Theorem 29
+
+--Theorem 30
+
+--Theorem 31
+-- This is a silly test. We should do better.
+
+isPrimeHelper :: Int -> Int -> Bool
+isPrimeHelper test num 
+ | test == 0 = error "1 is not a prime"
+ | test == 1 = True
+ | mod num test == 0 = False
+ | otherwise = isPrimeHelper (test-1) num
+
+isPrime :: Int -> Bool
+isPrime n = if n>1 then isPrimeHelper (n-1) n else False
+
+--Theorem 32
+
+gcder :: Int -> Int -> Int
+gcder a b 
+ | b>a = gcder b a 
+ | mod a b == 0 = b
+ | otherwise = (gcder b (mod a b))
+
+-- Theorem 33
+
+isCoPrime :: Int -> Int -> Bool
+isCoPrime a b = (gcd a b) == 1
+
+-- Theorem 34
+
+eulerPhi :: Int -> Int
+eulerPhi num = longer (filterer (isCoPrime num)[1..num])
+
+-- Theorem 35
+
+--isPrimeFactor :: Int -> Int -> Bool
+--isPrimeFactor num test = (isPrime test) && (mod num test == 0)
+
+--primeFactors :: Int -> [Int]
+--primeFactors num = filterer (isPrimeFactor num) [1..num]
+
+--primeFactorization :: Int -> [Int]
+--primeFactorization = 
+
 
