@@ -619,24 +619,95 @@ range start stop = [start..stop]
 
 --Theorem 23
 
+--I need to learn something about the System.Random API before I do this problem.
+
 --Theorem 24
 
+--I need to learn something about the System.Random API before I do this problem.
+
 --Theorem 25
+
+--I need to learn something about the System.Random API before I do this problem.
 
 --Theorem 26 
 
 data Setter a = Elem a | Set [Setter a]
  deriving (Show, Eq, Ord)
 
+-- Going to try to implement a set datatype with union and powerset.
 
-combinations _ [] = []
-combinations 0 list = []
-combinations 1 (x:rest) = (x:[]):(combinations 1 rest)
+callElem term = (Elem term)
+listToSet list = Set (mapper callElem list)
+
+
+unioner :: Eq a => Setter a -> Setter a -> Setter a
+unioner (Set firstlist) (Set secondlist)
+ | empty secondlist = (Set firstlist)
+ | otherwise = if (isIn firstofsecondlist firstlist) then (unioner (Set firstlist) (Set restofsecondlist)) else (unioner (Set (firstofsecondlist:firstlist)) (Set restofsecondlist))
+ where
+  (firstofsecondlist:restofsecondlist) = secondlist
+
+elementer :: Eq a => Setter a -> Setter a -> Bool
+elementer (Elem term) (Set set) = if (isIn (Elem term) set) then True else False
+
+subsetter :: Eq a => Setter a -> Setter a -> Bool
+subsetter (Set first) (Set second)
+ | empty first = True
+ | isIn firstoffirst second = subsetter (Set restoffirst) (Set second)
+ | otherwise = False
+ where
+  (firstoffirst:restoffirst) = first
+
+initializeSignals [] = []
+initializeSignals (x:rest) = False:(initializeSignals rest)
+
+turnOn (x:rest) place 
+ | place == 1 = (True:rest)
+ | empty (x:rest) = (x:rest)
+ | otherwise = x:(turnOn rest (place - 1))
+
+
+flipOnHelper list index length
+ | index <= length = (turnOn list index):(flipOnHelper list (index+1) length)
+ | otherwise = []
+
+flipOn list = flipOnHelper list 1 (longer list)
+
+
+joiner [] [] = []
+joiner first second = (firstoffirst || firstofsecond):(joiner restoffirst restofsecond)
+ where
+  (firstoffirst:restoffirst)=first
+  (firstofsecond:restofsecond)=second
+
+trimmer [] = []
+trimmer (x:rest) = if (isIn x rest) then (trimmer rest) else x:(trimmer rest)
 
 
 --Theorem 27
 
 --Theorem 28
+
+
+listInserter :: [a]->[[a]]->[[a]]
+listInserter list [] = list:[]
+listInserter list (firstlist:restlist)
+ | (longer list)>(longer firstlist) = listadder (firstlist:[]) (listInserter list restlist)
+ | otherwise = list:(firstlist:restlist)
+
+
+
+listsorter::[[a]]->[[a]]
+listsorter metalist = rfolder function accumulator metalist
+ where
+  function list metalist = listInserter list metalist
+  accumulator = []
+
+ 
+
+
+
+
 
 --Theorem 29
 
