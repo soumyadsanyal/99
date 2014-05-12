@@ -3,7 +3,7 @@ import Data.Char (digitToInt)
 import Data.Char (toUpper)
 import Data.Char (ord)
 import Data.Bits (shiftL, (.&.), (.|.))
---import System.Random
+import System.Random
 import Control.Monad
  
  
