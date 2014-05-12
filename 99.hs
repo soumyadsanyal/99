@@ -631,8 +631,71 @@ range start stop = [start..stop]
 
 --Theorem 26 
 
+starter string
+ | empty string = []
+ | otherwise = False:(starter rest)
+ where 
+  (first:rest) = string
+
+flipOn :: [Bool] -> Int->Int->[Bool]
+flipOn string index length 
+ | empty string = []
+ | index==1 = True:rest
+ | 1<=index && index<=length = False:(flipOn rest (index-1) length )
+ where
+  (x:rest) = string
+
+seedHelper :: [a]->Int->Int->[[Bool]]
+seedHelper string index length
+ | empty string = []
+ | index>length = []
+ | otherwise = (flipOn base index length):(seedHelper base (index+1) length)
+ where
+  base = starter string
+  (x:rest)=string
+
+seed :: [a] -> [[Bool]]
+seed string = seedHelper string 1 (longer string)
+
+bitwiseOr first second
+ | (longer first)/=(longer second) = error "Oh no!"
+ | empty first || empty second = []
+ | otherwise = (topfirst || topsecond):(bitwiseOr restfirst restsecond)
+ where
+  (topfirst:restfirst)=first
+  (topsecond:restsecond)=second
+
+irredundant :: Eq a => [[a]]->[[a]]
+irredundant list
+ | empty list = []
+ | otherwise = if (isIn x rest) then (irredundant rest) else (x:(irredundant rest))
+ where
+  (x:rest)=list
+
+build :: Int->[a]->[[Bool]]
+build 1 string = seed string
+build level string = irredundant [bitwiseOr first second | first<-(build (level-1) string), second<- (build 1 string)]
+
+onlyLevel :: Int->[a]->[[Bool]]
+onlyLevel level string = [list | list<-(build level string), not (isIn list (build (level-1) string))]
+
+mapFromBoolToSubString :: [Bool]->[a]->[a]
+mapFromBoolToSubString switches string
+ | (longer switches)/=(longer string) = error "Oh no!"
+ | empty switches || empty string = []
+ | otherwise = if firstswitches==True then firststring:(mapFromBoolToSubString restswitches reststring) else mapFromBoolToSubString restswitches reststring
+ where
+  (firststring:reststring)=string
+  (firstswitches:restswitches)=switches
+
+finalAnswer :: Int->[a]->[[a]]
+finalAnswer level string = [mapFromBoolToSubString term string | term<-(onlyLevel level string)]
+
+-- There's got to be a better algorithm for this.
 
 --Theorem 27
+
+
 
 --Theorem 28
 
@@ -799,36 +862,42 @@ goldbachRangeLargePrimes start stop = filter goldbachBothLargePrimes (goldbachRa
 
 -- Theorem 46 
 
-data Truth = Truer | Falser
+data Truth = T | F
  deriving (Show, Eq)
 
 noter::Truth->Truth
-noter Falser=Truer
-noter Truer=Falser
+noter F=T
+noter T=F
 
 ander:: Truth -> Truth -> Truth
-ander Truer Truer = Truer
-ander _ _ = Falser
+ander T T = T
+ander _ _ = F
 
 orer :: Truth->Truth->Truth
-orer Falser Falser = Falser
-orer _ _ = Truer
+orer F F = F
+orer _ _ = T
 
 nander :: Truth->Truth->Truth
-nander Truer Truer = Falser
-nander _ _ = Truer
+nander T T = F
+nander _ _ = T
 
 norer :: Truth->Truth->Truth
-norer Falser Falser = Truer
-norer _ _ = Falser
+norer F F = T
+norer _ _ = F
 
 xorer :: Truth->Truth->Truth
-xorer first second = if (first==second) then Falser else Truer
+xorer first second = if (first==second) then F else T
 
 impler :: Truth->Truth->Truth
-impler Truer Falser = Falser
-imler _ _ = Truer
+impler T F = F
+impler _ _ = T
 
 equer::Truth->Truth->Truth
-equer first second = if (first==second) then Truer else Falser
+equer first second = if (first==second) then T else F
+
+binaryAssignment = [[T,T],[T,F],[F,T],[F, F]]
+
+
+truthTable predicate = [(first,second,(predicate first second)) | [first,second]<-binaryAssignment]
+
 
