@@ -715,10 +715,39 @@ primeFactorizer num = rev (primeFactorizerHelper num [] 1)
 
 -- Theorem 37
 
+betterEulerPhiHelper :: [(Int,Int)]->Int
+betterEulerPhiHelper list
+ | empty list = 1
+ | otherwise = (thisprime - 1)*(thisprime^(thispower - 1))*(betterEulerPhiHelper rest)
+ where
+  (x:rest) = list
+  (thisprime,thispower) = x
+
+
+
+betterEulerPhi :: Int -> Int
+betterEulerPhi num = betterEulerPhiHelper (primeFactorizer num)
+
 -- Theorem 38
+
+-- Try to generate reductions and compare.
 
 -- Theorem 39
 
 primesInRange start stop = filterer isPrime [start..stop]
 
 -- Theorem 40 
+
+goldbachWitnessHelper :: Int -> [Int] -> (Int,Int)
+goldbachWitnessHelper num (x:rest)
+ | empty (x:rest) = error "Goldbach's conjecture is false!"
+ | isPrime (num - x) = (x,num-x)
+ | otherwise = goldbachWitnessHelper num rest
+
+goldbachWitness :: Int -> (Int,Int)
+goldbachWitness num = if (mod num 2 == 0) then goldbachWitnessHelper num (primesInRange 2 num) else error "Not an even number!"
+
+
+
+
+
