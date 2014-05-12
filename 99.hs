@@ -625,9 +625,14 @@ range start stop = [start..stop]
 
 --Theorem 26 
 
---combinations _ [] = []
---combinations 0 list = []
---combinations 1 (x:rest) = (x:[]):(combinations 1 rest)
+data Setter a = Elem a | Set [Setter a]
+ deriving (Show, Eq, Ord)
+
+
+combinations _ [] = []
+combinations 0 list = []
+combinations 1 (x:rest) = (x:[]):(combinations 1 rest)
+
 
 --Theorem 27
 
@@ -745,9 +750,66 @@ goldbachWitnessHelper num (x:rest)
  | otherwise = goldbachWitnessHelper num rest
 
 goldbachWitness :: Int -> (Int,Int)
-goldbachWitness num = if (mod num 2 == 0) then goldbachWitnessHelper num (primesInRange 2 num) else error "Not an even number!"
+goldbachWitness num = if ((mod num 2 == 0) && num >2) then goldbachWitnessHelper num (primesInRange 2 num) else error "Not an even number or number is equal to 2!"
+
+-- Theorem 41
+
+evenAndBiggerThanTwo :: Int -> Bool
+evenAndBiggerThanTwo num = if ((mod num 2 == 0) && num >2) then True else False
+
+goldbachRangeHelper :: [Int] -> [(Int,Int,Int)]
+goldbachRangeHelper list
+ | empty list = []
+ | otherwise = (x,firstprime,secondprime):(goldbachRangeHelper rest)
+ where
+  (x:rest) = list
+  (firstprime, secondprime) = (goldbachWitness x)
 
 
+goldbachRange :: Int -> Int -> [(Int, Int, Int)]
+goldbachRange start stop = goldbachRangeHelper (filter evenAndBiggerThanTwo [start..stop])
+
+goldbachBothLargePrimes :: (Int,Int,Int) -> Bool
+goldbachBothLargePrimes (num, firstprime, secondprime) = if (firstprime>50 && secondprime>50) then True else False
 
 
+goldbachRangeLargePrimes :: Int->Int->[(Int,Int,Int)]
+goldbachRangeLargePrimes start stop = filter goldbachBothLargePrimes (goldbachRange start stop)
+
+-- there are longer (goldbachRangeLargePrimes 2 3000) many cases = 10 cases.
+
+-- Theorem 46 
+
+data Truth = Truer | Falser
+ deriving (Show, Eq)
+
+noter::Truth->Truth
+noter Falser=Truer
+noter Truer=Falser
+
+ander:: Truth -> Truth -> Truth
+ander Truer Truer = Truer
+ander _ _ = Falser
+
+orer :: Truth->Truth->Truth
+orer Falser Falser = Falser
+orer _ _ = Truer
+
+nander :: Truth->Truth->Truth
+nander Truer Truer = Falser
+nander _ _ = Truer
+
+norer :: Truth->Truth->Truth
+norer Falser Falser = Truer
+norer _ _ = Falser
+
+xorer :: Truth->Truth->Truth
+xorer first second = if (first==second) then Falser else Truer
+
+impler :: Truth->Truth->Truth
+impler Truer Falser = Falser
+imler _ _ = Truer
+
+equer::Truth->Truth->Truth
+equer first second = if (first==second) then Truer else Falser
 
