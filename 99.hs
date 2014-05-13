@@ -688,12 +688,31 @@ mapFromBoolToSubString switches string
   (firststring:reststring)=string
   (firstswitches:restswitches)=switches
 
-finalAnswer :: Int->[a]->[[a]]
-finalAnswer level string = [mapFromBoolToSubString term string | term<-(onlyLevel level string)]
+combinations :: Int->[a]->[[a]]
+combinations level string = [mapFromBoolToSubString term string | term<-(onlyLevel level string)]
 
 -- There's got to be a better algorithm for this.
 
 --Theorem 27
+
+bitwiseNot :: [Bool]->[Bool]
+bitwiseNot string 
+ | empty string = []
+ | otherwise = (not x):(bitwiseNot rest)
+ where
+  (x:rest) = string
+
+dropSelected :: [a] -> [Bool] -> [a]
+dropSelected string switches
+ | empty string = []
+ | otherwise = if thisswitches==True then dropSelected reststring restswitches else thisstring:(dropSelected reststring restswitches)
+ where
+  (thisstring:reststring) = string
+  (thisswitches:restswitches) = switches
+
+
+
+
 
 
 
@@ -715,15 +734,6 @@ listsorter metalist = rfolder function accumulator metalist
   accumulator = []
 
  
-
-
-
-
-
---Theorem 29
-
---Theorem 30
-
 --Theorem 31
 
 --silly version first
