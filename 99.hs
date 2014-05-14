@@ -710,7 +710,7 @@ dropSelected string switches
   (thisstring:reststring) = string
   (thisswitches:restswitches) = switches
 
-
+-- This will be recursively split up by subset using 26
 
 
 
