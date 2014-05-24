@@ -875,9 +875,14 @@ goldbachRangeLargePrimes start stop = filter goldbachBothLargePrimes (goldbachRa
 data Truth = T | F
  deriving (Show, Eq)
 
+
 noter::Truth->Truth
 noter F=T
 noter T=F
+
+flipper :: (Truth->Truth->Truth)->(Truth->Truth->Truth)
+(flipper predicate) first second = noter (predicate first second)
+
 
 ander:: Truth -> Truth -> Truth
 ander T T = T
@@ -902,12 +907,16 @@ impler :: Truth->Truth->Truth
 impler T F = F
 impler _ _ = T
 
-equer::Truth->Truth->Truth
-equer first second = if (first==second) then T else F
+assignments = [T,F]
 
-binaryAssignment = [[T,T],[T,F],[F,T],[F, F]]
+equiver::(Truth->Truth->Truth)->(Truth->Truth->Truth)->Truth
+equiver firstPredicate secondPredicate = if [firstPredicate first second | first<-assignments, second<-assignments] == [secondPredicate first second | first<-assignments, second<-assignments] then T else F
+
+truthTable :: (Truth->Truth->Truth)->[(Truth,Truth,Truth)]
+truthTable predicate = [(first,second, predicate first second)| first <- assignments, second<- assignments]
 
 
-truthTable predicate = [(first,second,(predicate first second)) | [first,second]<-binaryAssignment]
+
+
 
 
