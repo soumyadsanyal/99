@@ -3,7 +3,7 @@ import Data.Char (digitToInt)
 import Data.Char (toUpper)
 import Data.Char (ord)
 import Data.Bits (shiftL, (.&.), (.|.))
-import System.Random
+--import System.Random
 import Control.Monad
  
  
@@ -926,6 +926,11 @@ truthTable predicate = [(first,second, predicate first second)| first <- assignm
 assigning level
  | level == 1 = [value:[]|value<-assignments]
  | otherwise = [value:thing|value<-assignments,thing<-(assigning (level-1))]
+
+truthTableVariable :: ([Truth]->Truth)->[a]->[[Truth]]
+truthTableVariable predicate string = [listadder assigned [(predicate assigned)] | assigned<-(assigning (longer string))]
+ 
+
 
 
 
