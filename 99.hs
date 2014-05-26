@@ -915,6 +915,17 @@ equiver firstPredicate secondPredicate = if [firstPredicate first second | first
 truthTable :: (Truth->Truth->Truth)->[(Truth,Truth,Truth)]
 truthTable predicate = [(first,second, predicate first second)| first <- assignments, second<- assignments]
 
+-- Theorem 47
+
+-- Use `trick` ?
+
+-- Theorem 48
+
+-- First I want to figure out how to make all possible truth assignments to the elements of a list.
+
+assigning level
+ | level == 1 = [value:[]|value<-assignments]
+ | otherwise = [value:thing|value<-assignments,thing<-(assigning (level-1))]
 
 
 
