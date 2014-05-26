@@ -930,7 +930,18 @@ assigning level
 truthTableVariable :: ([Truth]->Truth)->[a]->[[Truth]]
 truthTableVariable predicate string = [listadder assigned [(predicate assigned)] | assigned<-(assigning (longer string))]
  
+-- Theorem 49
 
+-- Theorem 50
+
+-- Theorem 54A
+
+data Tree a = Empty | Node a (Tree a)  (Tree a)
+ deriving (Show, Eq)
+
+-- Predicate?
+
+-- Theorem 55
 
 
 
