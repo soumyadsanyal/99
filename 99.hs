@@ -932,12 +932,59 @@ truthTableVariable predicate string = [listadder assigned [(predicate assigned)]
  
 -- Theorem 49
 
--- Theorem 50
+grayCode :: Int -> [[Char]]
+grayCode 1 = ["0","1"]
+grayCode n = listadder (mapper (listadder "0") (grayCode (n-1))) (mapper (listadder "1") (rev (grayCode (n-1))))
 
--- Theorem 54A
+
+-- Theorem 50
 
 data Tree a = Empty | Node a (Tree a)  (Tree a)
  deriving (Show, Eq)
+
+leaf :: a -> Tree a
+leaf x = Node x Empty Empty
+
+-- Learning a few things about Huffman codes
+-- First, sort the table in increasing order of frequency. Then follow siggraph tutorial
+
+-- test list
+thing = [("a",5),("b",4),("c",10),("d",2),("e",1),("f",11)]
+
+hufInsert :: (String,Integer)->[(String,Integer)]->[(String,Integer)]
+hufInsert entry [] = entry:[]
+hufInsert entry (firstlist:restlist)
+ | (secondcoordinate entry)>(secondcoordinate firstlist) = listadder (firstlist:[]) (hufInsert entry restlist)
+ | otherwise = entry:(firstlist:restlist)
+
+hufSorter::[(String,Integer)]->[(String,Integer)]
+hufSorter metalist = rfolder function accumulator metalist
+ where
+  function list metalist = hufInsert list metalist
+  accumulator = []
+
+-- Fine, now let's build a Huffman tree
+
+hufCombiner :: (String, Integer) -> (String, Integer) -> (String, Integer)
+hufCombiner first second = ((listadder (firstcoordinate first) (firstcoordinate second)), (secondcoordinate first) + (secondcoordinate second))
+
+hufListTraversalHelper :: ([(String,Integer)],[(String, Integer)]) -> ([(String,Integer)],[(String,Integer)])
+hufListTraversalHelper ([],list)  = ([],list)
+hufListTraversalHelper ((x:[]),list)  = (x:[],(x:list))
+hufListTraversalHelper ((x:y:rest),list) = hufListTraversalHelper ((hufSorter ((hufCombiner x y):rest)),listadder ((hufCombiner x y):rest) (listadder [("",9999)] list))
+
+hufListTraversal :: [(String,Integer)]->([(String,Integer)],[(String,Integer)])
+hufListTraversal list = (hufListTraversalHelper ((hufSorter list),(hufSorter list)))
+
+hufTreeHelper :: ([(String,Integer)], Tree (String,Integer)) -> ([(String,Integer)] ,Tree (String,Integer))
+hufTreeHelper ([], tree) = ([],tree)
+hufTreeHelper (x:[],tree) = ([],) -- to be resumed 
+
+--hufEater :: [(Char,Integer)] -> Tree (Char,Integer)
+
+
+
+-- Theorem 54A
 
 -- Predicate?
 
