@@ -943,6 +943,17 @@ data Tree a = Empty | Node a (Tree a)  (Tree a)
 
 -- Theorem 55
 
+-- Let's try and compute a depth function for trees, just for kicks
+
+depth :: Tree a -> Int
+depth Empty = 1
+depth (Node _ firsttree secondtree) = 1+ (max (depth firsttree) (depth secondtree))
+
+-- Let's try and compute a number of successors function for each node
+
+nodes :: Tree a -> Int
+nodes Empty = 0
+nodes (Node _ firsttree secondtree) = 1 + (nodes firsttree) + (nodes secondtree)
 
 
 
