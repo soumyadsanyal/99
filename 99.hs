@@ -949,7 +949,7 @@ leaf x = Node x Empty Empty
 -- First, sort the table in increasing order of frequency. Then follow siggraph tutorial
 
 -- test list
-thing = [("a",5),("b",4),("c",10),("d",2),("e",1),("f",11)]
+thing = [("a",45),("b",13),("c",12),("d",16),("e",9),("f",5)]
 
 hufInsert :: (String,Integer)->[(String,Integer)]->[(String,Integer)]
 hufInsert entry [] = entry:[]
@@ -978,7 +978,7 @@ hufListTraversal list = (hufListTraversalHelper ((hufSorter list),(hufSorter lis
 
 hufTreeHelper :: ([(String,Integer)], Tree (String,Integer)) -> ([(String,Integer)] ,Tree (String,Integer))
 hufTreeHelper ([], tree) = ([],tree)
-hufTreeHelper (x:[],tree) = ([],) -- to be resumed 
+--hufTreeHelper (x:[],tree) = ([],) -- to be resumed 
 
 --hufEater :: [(Char,Integer)] -> Tree (Char,Integer)
 
