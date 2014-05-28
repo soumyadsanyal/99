@@ -976,11 +976,18 @@ hufListTraversalHelper ((x:y:rest),list) = hufListTraversalHelper ((hufSorter ((
 hufListTraversal :: [(String,Integer)]->([(String,Integer)],[(String,Integer)])
 hufListTraversal list = (hufListTraversalHelper ((hufSorter list),(hufSorter list)))
 
-hufTreeHelper :: ([(String,Integer)], Tree (String,Integer)) -> ([(String,Integer)] ,Tree (String,Integer))
-hufTreeHelper ([], tree) = ([],tree)
+-- Here I want to build a function that extracts the root of a tree
+
+findRoot :: Tree a -> a
+findRoot tree = case tree of
+                     (Node label _ _) -> label
+                     Empty -> error "Empty tree!"
+
+hufTreeHelper :: ([(String,Integer)], [Tree (String,Integer)]) -> ([(String,Integer)] ,[Tree (String,Integer)])
+hufTreeHelper (x:[], trees) = (x:[],trees)
+--hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), --need to implement graph construction here: see notes )  
 --hufTreeHelper (x:[],tree) = ([],) -- to be resumed 
 
---hufEater :: [(Char,Integer)] -> Tree (Char,Integer)
 
 
 
