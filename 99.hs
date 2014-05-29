@@ -983,10 +983,20 @@ findRoot tree = case tree of
                      (Node label _ _) -> label
                      Empty -> error "Empty tree!"
 
+isXInTrees :: (String, Integer)->[Tree (String,Integer)]->Bool
+isXInTrees x trees= if isIn x (mapper findRoot trees) then True else False
+
+isYInTrees :: (String, Integer)->[Tree (String,Integer)]->Bool
+isYInTrees y trees= if isIn y (mapper findRoot trees) then True else False
+
+updateTrees (String,Integer)->(String,Integer)->[Tree (String,Integer)]->[Tree (String,Integer)]
+updateTrees x y trees 
+
+ 
+
 hufTreeHelper :: ([(String,Integer)], [Tree (String,Integer)]) -> ([(String,Integer)] ,[Tree (String,Integer)])
 hufTreeHelper (x:[], trees) = (x:[],trees)
---hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), --need to implement graph construction here: see notes )  
---hufTreeHelper (x:[],tree) = ([],) -- to be resumed 
+hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), )
 
 
 
