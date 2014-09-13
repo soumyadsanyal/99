@@ -917,7 +917,9 @@ truthTable predicate = [(first,second, predicate first second)| first <- assignm
 
 -- Theorem 47
 
--- Use `trick` ?
+infixander :: Truth -> Truth -> Truth
+first `infixander` second = ander first second
+
 
 -- Theorem 48
 
@@ -989,14 +991,14 @@ isXInTrees x trees= if isIn x (mapper findRoot trees) then True else False
 isYInTrees :: (String, Integer)->[Tree (String,Integer)]->Bool
 isYInTrees y trees= if isIn y (mapper findRoot trees) then True else False
 
-updateTrees (String,Integer)->(String,Integer)->[Tree (String,Integer)]->[Tree (String,Integer)]
-updateTrees x y trees 
+--updateTrees (String,Integer)->(String,Integer)->[Tree (String,Integer)]->[Tree (String,Integer)]
+--updateTrees x y trees 
 
  
 
-hufTreeHelper :: ([(String,Integer)], [Tree (String,Integer)]) -> ([(String,Integer)] ,[Tree (String,Integer)])
-hufTreeHelper (x:[], trees) = (x:[],trees)
-hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), )
+--hufTreeHelper :: ([(String,Integer)], [Tree (String,Integer)]) -> ([(String,Integer)] ,[Tree (String,Integer)])
+--hufTreeHelper (x:[], trees) = (x:[],trees)
+--hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), )
 
 
 
@@ -1004,8 +1006,6 @@ hufTreeHelper (x:y:rest, trees) = ((hufSorter (hufCombiner x y):rest), )
 -- Theorem 54A
 
 -- Predicate?
-
--- Theorem 55
 
 -- Let's try and compute a depth function for trees, just for kicks
 
@@ -1019,8 +1019,24 @@ nodes :: Tree a -> Int
 nodes Empty = 0
 nodes (Node _ firsttree secondtree) = 1 + (nodes firsttree) + (nodes secondtree)
 
+-- Theorem 55
 
--- Trying to work with Git.
+{- we are first going to write a cbt function to generate one (canonical) cbt tree with n nodes. after this we'll look into enumerating the entire list via symmetries.-}
+
+upper :: Int -> Int -> Int
+upper _ 0 = 0
+upper _ 1 = 1
+upper l n = if (((2*l) - 1) >= n-1) then l else  (upper (l+1) n)
+
+lower :: Int -> Int -> Int
+lower _ n = n - (upper 0 n)
+
+
+cbt :: Int -> Tree Char
+cbt 0 = Empty
+cbt 1 = leaf 'x'
+cbt n = Node 'x' (cbt (upper 0 (n-1))) (cbt (lower 0 (n-1)))
+
 
 
 
