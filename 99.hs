@@ -1023,19 +1023,25 @@ nodes (Node _ firsttree secondtree) = 1 + (nodes firsttree) + (nodes secondtree)
 
 {- we are first going to write a cbt function to generate one (canonical) cbt tree with n nodes. after this we'll look into enumerating the entire list via symmetries.-}
 
-upper :: Int -> Int -> Int
-upper _ 0 = 0
-upper _ 1 = 1
-upper l n = if (((2*l) - 1) >= n-1) then l else  (upper (l+1) n)
+upperhelper :: Int -> Int -> Int
+upperhelper _ 0 = 0
+upperhelper _ 1 = 1
+upperhelper l n = if (((2*l) - 1) >= n-1) then l else  (upperhelper (l+1) n)
 
-lower :: Int -> Int -> Int
-lower _ n = n - (upper 0 n)
+upper :: Int -> Int
+upper n = upperhelper 0 n
+
+lowerhelper :: Int -> Int -> Int
+lowerhelper _ n = n - (upperhelper 0 n)
+
+lower :: Int -> Int
+lower n = lowerhelper 0 n
 
 
 cbt :: Int -> [Tree Char]
 cbt 0 = [Empty]
 cbt 1 = [leaf 'x']
-cbt n = [Node 'x' left right | index <- [upper 0 (n-1), lower 0 (n-1)], left <- cbt index, right <- cbt (n-1-index)]
+cbt n = [Node 'x' left right | index <- [upper (n-1), lower (n-1)], left <- cbt index, right <- cbt (n-1-index)]
 
 
 -- Theorem 56
