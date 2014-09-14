@@ -1057,3 +1057,31 @@ symTree tree = ((revTree tree) == tree)
 
 
 
+--Theorem 61
+
+leaves :: Tree a -> Int
+leaves Empty = 0
+leaves (Node x Empty Empty) = 1
+leaves (Node x left right) = (leaves left) + (leaves right)
+
+--Theorem 61A
+
+leafRaker :: Tree a -> [a]
+leafRaker Empty = []
+leafRaker (Node x Empty Empty) = [x]
+leafRaker (Node x left right) = listadder (leafRaker left) (leafRaker right)
+
+
+--Theorem 62
+
+nodelist :: Tree a -> [a]
+nodelist Empty = []
+nodelist (Node x left right) = x:(listadder (nodelist left) (nodelist right))
+
+internalNodes :: Tree a -> [a]
+internalNodes (Node x Empty Empty) = []
+internalNodes (Node x left right) = x:(listadder (internalNodes left) (internalNodes right))
+
+
+
+
