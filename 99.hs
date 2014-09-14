@@ -1032,10 +1032,13 @@ lower :: Int -> Int -> Int
 lower _ n = n - (upper 0 n)
 
 
-cbt :: Int -> Tree Char
-cbt 0 = Empty
-cbt 1 = leaf 'x'
-cbt n = Node 'x' (cbt (upper 0 (n-1))) (cbt (lower 0 (n-1)))
+cbt :: Int -> [Tree Char]
+cbt 0 = [Empty]
+cbt 1 = [leaf 'x']
+cbt n = [Node 'x' left right | index <- [upper 0 (n-1), lower 0 (n-1)], left <- cbt index, right <- cbt (n-1-index)]
+
+
+
 
 
 
