@@ -1038,6 +1038,14 @@ cbt 1 = [leaf 'x']
 cbt n = [Node 'x' left right | index <- [upper 0 (n-1), lower 0 (n-1)], left <- cbt index, right <- cbt (n-1-index)]
 
 
+-- Theorem 56
+
+revTree :: Tree a -> Tree a
+revTree Empty = Empty
+revTree (Node x left right) = Node x (revTree right) (revTree left)
+
+symTree :: Eq a => Tree a -> Bool
+symTree tree = ((revTree tree) == tree)
 
 
 
