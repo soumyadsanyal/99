@@ -1053,7 +1053,18 @@ revTree (Node x left right) = Node x (revTree right) (revTree left)
 symTree :: Eq a => Tree a -> Bool
 symTree tree = ((revTree tree) == tree)
 
+-- Theorem 57
 
+bstinserter :: Ord a => Tree a -> a -> Tree a
+bstinserter Empty x = Node x Empty Empty
+bstinserter (Node y left right) x
+ | x<y = Node y (bstinserter left x) right
+ | x>y = Node y left (bstinserter right x)
+ | x==y = Node x left right
+
+
+bst :: (Ord a) => [a] -> Tree a
+bst list = lfolder bstinserter Empty list
 
 
 
@@ -1083,5 +1094,9 @@ internalNodes (Node x Empty Empty) = []
 internalNodes (Node x left right) = x:(listadder (internalNodes left) (internalNodes right))
 
 
+
+reduced :: Eq a => [a] -> [a]
+reduced [] = []
+reduced (x:xs) = if (isIn x xs) then xs else (x:(reduced xs))
 
 
