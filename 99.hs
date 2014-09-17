@@ -1041,7 +1041,8 @@ lower n = lowerhelper 0 n
 cbt :: Int -> [Tree Char]
 cbt 0 = [Empty]
 cbt 1 = [leaf 'x']
-cbt n = [Node 'x' left right | index <- [upper (n-1), lower (n-1)], left <- cbt index, right <- cbt (n-1-index)]
+cbt n = if (upper (n-1) /= lower (n-1)) then [Node 'x' left right | index <- [upper (n-1), lower (n-1)], left <- cbt index, right <- cbt (n-1-index)] else [Node 'x' left right | index <- [upper (n-1)], left <- cbt index, right <- cbt (n-1-index)]
+
 
 
 -- Theorem 56
@@ -1065,6 +1066,26 @@ bstinserter (Node y left right) x
 
 bst :: (Ord a) => [a] -> Tree a
 bst list = lfolder bstinserter Empty list
+
+--Theorem 58
+
+symcbt :: Int -> [Tree Char]
+symcbt n = filterer (symTree) (cbt n)
+
+
+
+--Theorem 59
+
+--We construct hbts of height N recursively by joining a root to any of: two hbts of height N-1, one hbt of height N-1 and one hbt of height N-2, one hbt of height N-2 and one hbt of height N-1.
+
+hbtlist:: Int -> [Tree Char]
+hbtlist (-1) = [Empty]
+hbtlist 0 = [Node 'x' Empty Empty]
+hbtlist n = listadder (listadder ([Node 'x' left right | left<- hbtlist (n-1), right <- hbtlist (n-1)]) ([Node 'x' left right | left<- hbtlist (n-1), right <- hbtlist (n-2)])) ([Node 'x' left right | left<- hbtlist (n-2), right <- hbtlist (n-1)])
+
+
+--Theorem 60
+
 
 
 
