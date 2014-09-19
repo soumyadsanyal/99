@@ -1121,6 +1121,17 @@ internalNodes :: Tree a -> [a]
 internalNodes (Node x Empty Empty) = []
 internalNodes (Node x left right) = x:(listadder (internalNodes left) (internalNodes right))
 
+--Theorem 62B
+
+nodesAtLevel :: Int -> Tree a -> [a]
+nodesAtLevel _ Empty = []
+nodesAtLevel 0 (Node x left right) = x:[]
+nodesAtLevel n (Node x left right) = listadder (nodesAtLevel (n-1) left) (nodesAtLevel (n-1) right) 
+
+--Theorem 63
+
+
+
 
 
 reduced :: Eq a => [a] -> [a]
