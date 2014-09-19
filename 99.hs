@@ -1086,6 +1086,13 @@ hbtlist n = listadder (listadder ([Node 'x' left right | left<- hbtlist (n-1), r
 
 --Theorem 60
 
+--First, we need to prove that every hbt tree of a given height with the minimum possible number of nodes is equivalent under certain symmetries to a tree of a canonical form (left justified). Then, we prove that the recursive whisker construction is optimal. Then we use the recursion below:
+
+minhbt:: Int -> Int
+minhbt 0 = 1
+minhbt 1 = 2
+minhbt n = (minhbt (n-1)) + 1 + (minhbt (n-2))
+
 
 
 
