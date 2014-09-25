@@ -1,0 +1,18 @@
+myDrop n xs = if n<=0 || null xs then xs else myDrop (n-1) (tail xs)
+
+myDrop 2 "abcd" = if 2<=0 || null "abcd" then "abcd" else myDrop (2-1) (tail "abcd")
+myDrop 2 "abcd" = if False || null "abcd" then "abcd" else myDrop (2-1) (tail "abcd")
+myDrop 2 "abcd" = if False || False then "abcd" else myDrop (2-1) (tail "abcd")
+myDrop 2 "abcd" = if False then "abcd" else myDrop (2-1) (tail "abcd")
+myDrop 2 "abcd" = myDrop (2-1) (tail "abcd")
+
+myDrop (2-1) (tail "abcd") = if (2-1)<=0 || null (tail "abcd") then (tail "abcd") else myDrop ((2-1)-1) tail (tail "abcd")
+myDrop (2-1) (tail "abcd") = if 1<=0 || null "bcd" then "bcd" else myDrop (1-1) (tail "bcd")
+myDrop (2-1) (tail "abcd") = if False || False then "bcd" else myDrop (1-1) (tail "bcd")
+myDrop (2-1) (tail "abcd") = myDrop (1-1) (tail "bcd")
+
+myDrop (1-1) (tail "bcd") = if (1-1) <=0 || null (tail "bcd") then (tail "bcd") else myDrop ((1-1)-1) tail (tail "bcd")
+myDrop (1-1) (tail "bcd") = if 0 <=0 || null (tail "bcd") then (tail "bcd") else myDrop ((1-1)-1) tail (tail "bcd")
+myDrop (1-1) (tail "bcd") = tail "bcd"
+
+
