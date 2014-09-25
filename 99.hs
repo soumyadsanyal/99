@@ -1120,4 +1120,11 @@ reduced :: Eq a => [a] -> [a]
 reduced [] = []
 reduced (x:xs) = if (isIn x xs) then xs else (x:(reduced xs))
 
+minimerhelper :: Int -> [Int] -> Int
+minimerhelper currentleast [] = currentleast
+minimerhelper currentleast (x:xs) = if (x<currentleast) then (minimerhelper x xs) else (minimerhelper currentleast xs)
+
+minimer :: [Int] -> Int
+minimer [] = minimerhelper 0 []
+minimer (x:xs) = minimerhelper x (x:xs)
 
